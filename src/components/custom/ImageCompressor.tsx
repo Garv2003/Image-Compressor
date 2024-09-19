@@ -1,4 +1,4 @@
-import { $, component$, useStore, noSerialize, useTask$, useVisibleTask$ } from '@builder.io/qwik';
+import { $, component$, useStore, noSerialize, useVisibleTask$ } from '@builder.io/qwik';
 import type { NoSerialize } from '@builder.io/qwik';
 import imageCompression from 'browser-image-compression';
 import type { ImageStore } from '../../utils/type';
