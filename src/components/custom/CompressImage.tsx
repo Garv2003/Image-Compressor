@@ -23,12 +23,10 @@ const CompressImage = component$<CompressImageProps>(({
         <div class="flex flex-col items-center">
             <div class="flex items-center justify-center gap-3 mb-3">
                 <div
-                    class="radial-progress border-2 border-black"
-                    style={`--value:${percentage.toFixed(2)}; --size:4rem; --thickness: 0.2rem;`}
+                    class="radial-progress border-4"
+                    style={`--value:${percentage.toFixed(2)};`}
                     role="progressbar">
-                    <span class="font-bold text-sm">
-                        {percentage.toFixed(2)}%
-                    </span>
+                    {percentage.toFixed(2)}%
                 </div>
 
                 <div class="flex flex-col items-center justify-center gap-1 mb-3">
