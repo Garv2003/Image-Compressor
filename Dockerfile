@@ -1,15 +1,26 @@
-FROM node:18-alpine AS builder
-WORKDIR /app
+ARG NODE_VERSION=18.18.2 
+FROM node:${NODE_VERSION}-alpine as base 
+WORKDIR /usr/src/app 
+FROM base as deps
 RUN npm install -g pnpm
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install
-COPY . .
-RUN pnpm run build
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
+    --mount=type=cache,target=/usr/src/app/.pnpm \
+    pnpm install --frozen-lockfile
 
-FROM nginx:alpine AS production
-WORKDIR /usr/share/nginx/html
-RUN rm -rf ./*
-COPY --from=builder /app/dist/ .
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+FROM deps as build 
+COPY . . 
+RUN ["pnpm", "run", "build"]
+
+FROM base as final
+ENV NODE_ENV production
+ENV ORIGIN https://image-compressor-mheh.onrender.com
+
+USER node
+COPY package.json .
+COPY --from=deps /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/server ./server
+EXPOSE 3000
+CMD ["pnpm","run","serve"]
+
