@@ -88,11 +88,13 @@ export default component$(() => {
     });
 
     return (
-        <div class="w-full min-h-screen flex flex-col justify-center items-center" data-theme={theme.value}>
+        <div class="w-full min-h-screen flex flex-col justify-center items-center p-2" data-theme={theme.value}>
 
             <ThemeSelect theme={theme.value} handleThemeChange={handleThemeChange} />
 
-            <h1 class="text-5xl font-bold mb-6">Image Compressor</h1>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 text-center sm:text-left">
+                Image Compressor
+            </h1>
 
             {!state.isCompress && (
                 state.imageSrc ? (
